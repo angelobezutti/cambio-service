@@ -1,4 +1,4 @@
-package br.com.dev.mscambio.model;
+package br.com.dev.mscambio.models;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
