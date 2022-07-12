@@ -1,17 +1,25 @@
 package br.com.dev.msbook.models;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
-
+@Entity
 public class Book implements Serializable {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "author", nullable = false, length = 180)
     private String author;
+    @Column(name = "launch_date", nullable = false)
     private Date launchDate;
+    @Column(nullable = false)
     private BigDecimal price;
+    @Column(nullable = false, length = 250)
     private String title;
+    @Transient
     private String currency;
+    @Transient
     private String environment;
 
     public Book() {
