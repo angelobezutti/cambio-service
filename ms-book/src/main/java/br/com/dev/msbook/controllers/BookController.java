@@ -1,6 +1,7 @@
 package br.com.dev.msbook.controllers;
 
 import br.com.dev.msbook.models.Book;
+import br.com.dev.msbook.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +17,17 @@ import java.util.Date;
 public class BookController {
     @Autowired
     private Environment environment;
+    @Autowired
+    private BookRepository repository;
 
     @GetMapping(value = "/{id}/{currency}")
     public Book findBook(@PathVariable("id") Long id, @PathVariable("currency") String currency){
+        var book = repository.getReferenceById(id);
+        if (book == null) throw new RuntimeException("Book not Found");
+
         var port = environment.getProperty("local.server.port");
-        return new Book(1L, "Nigel Poulton", new Date(), BigDecimal.valueOf(13.7),"Docker Deep Dive", currency, port);
+        book.setEnvironment(port);
+        return book;
     }
+
 }
