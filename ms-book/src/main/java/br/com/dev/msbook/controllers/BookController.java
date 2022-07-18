@@ -2,15 +2,16 @@ package br.com.dev.msbook.controllers;
 
 import br.com.dev.msbook.models.Book;
 import br.com.dev.msbook.repositories.BookRepository;
+import br.com.dev.msbook.responses.Cambio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("book-service")
@@ -25,8 +26,18 @@ public class BookController {
         var book = repository.getReferenceById(id);
         if (book == null) throw new RuntimeException("Book not Found");
 
+        HashMap<String, String> params = new HashMap<>();
+        params.put("amount", book.getPrice().toString());
+        params.put("from", "USD");
+        params.put("to", currency);
+
+        var response = new RestTemplate()
+                .getForEntity("http://localhost:8000/cambio-service/{amount}/{from}/{to}", Cambio.class, params);
+
+        var cambio = response.getBody();
         var port = environment.getProperty("local.server.port");
         book.setEnvironment(port);
+        book.setPrice(cambio.getConvertedValue());
         return book;
     }
 
