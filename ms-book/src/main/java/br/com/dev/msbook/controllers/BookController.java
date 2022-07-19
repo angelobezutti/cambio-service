@@ -1,6 +1,7 @@
 package br.com.dev.msbook.controllers;
 
 import br.com.dev.msbook.models.Book;
+import br.com.dev.msbook.proxys.CambioProxy;
 import br.com.dev.msbook.repositories.BookRepository;
 import br.com.dev.msbook.responses.Cambio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,22 @@ public class BookController {
     private Environment environment;
     @Autowired
     private BookRepository repository;
+    @Autowired
+    private CambioProxy proxy;
+
+    @GetMapping(value = "/{id}/{currency}")
+    public Book findBook(@PathVariable("id") Long id, @PathVariable("currency") String currency){
+        var book = repository.getReferenceById(id);
+        if (book == null) throw new RuntimeException("Book not Found");
+
+        var cambio = proxy.getCambio(book.getPrice(), "USD", currency);
+        var port = environment.getProperty("local.server.port");
+        book.setEnvironment(port + "FEIGN");
+        book.setPrice(cambio.getConvertedValue());
+        return book;
+    }
+
+    /* Example with using RestTemplate
 
     @GetMapping(value = "/{id}/{currency}")
     public Book findBook(@PathVariable("id") Long id, @PathVariable("currency") String currency){
@@ -39,6 +56,5 @@ public class BookController {
         book.setEnvironment(port);
         book.setPrice(cambio.getConvertedValue());
         return book;
-    }
-
+    } */
 }
