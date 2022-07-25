@@ -26,12 +26,12 @@ public class BookController {
 
     @GetMapping(value = "/{id}/{currency}")
     public Book findBook(@PathVariable("id") Long id, @PathVariable("currency") String currency){
-        var book = repository.getReferenceById(id);
+        var book = repository.getById(id);
         if (book == null) throw new RuntimeException("Book not Found");
 
         var cambio = proxy.getCambio(book.getPrice(), "USD", currency);
         var port = environment.getProperty("local.server.port");
-        book.setEnvironment(port + "FEIGN");
+        book.setEnvironment("Book port: "+ port + " Cambio port: "+ cambio.getEnvironment());
         book.setPrice(cambio.getConvertedValue());
         return book;
     }
@@ -40,7 +40,7 @@ public class BookController {
 
     @GetMapping(value = "/{id}/{currency}")
     public Book findBook(@PathVariable("id") Long id, @PathVariable("currency") String currency){
-        var book = repository.getReferenceById(id);
+        var book = repository.getById(id);
         if (book == null) throw new RuntimeException("Book not Found");
 
         HashMap<String, String> params = new HashMap<>();

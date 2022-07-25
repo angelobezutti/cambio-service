@@ -17,7 +17,7 @@ public class Book implements Serializable {
     @Column(name = "launch_date", nullable = false)
     private Date launchDate;
     @Column(nullable = false)
-    private BigDecimal price;
+    private Double price;
     @Column(nullable = false, length = 250)
     private String title;
     @Transient
@@ -28,7 +28,7 @@ public class Book implements Serializable {
     public Book() {
     }
 
-    public Book(Long id, String author, Date launchDate, BigDecimal price, String title, String currency, String environment) {
+    public Book(Long id, String author, Date launchDate, Double price, String title, String currency, String environment) {
         this.id = id;
         this.author = author;
         this.launchDate = launchDate;
@@ -62,11 +62,11 @@ public class Book implements Serializable {
         this.launchDate = launchDate;
     }
 
-    public BigDecimal getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

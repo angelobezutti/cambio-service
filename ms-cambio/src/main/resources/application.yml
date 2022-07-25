@@ -1,5 +1,11 @@
 server:
   port: 8000
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    hostname: localhost
 spring:
   application:
     name: ms-cambio
@@ -20,7 +26,3 @@ spring:
     schemas: cambio_service
     user: root
     password: admin
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
