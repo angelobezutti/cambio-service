@@ -2,7 +2,7 @@ server:
   port: 8100
 spring:
   application:
-    name: ms-book
+    name: book-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/book_service?useTimezone=true&serverTimezone=UTC
@@ -44,3 +44,7 @@ resilience4j:
         max-attempts: 5
         wait-duration: 1s
         enable-exponential-backoff: true
+springdoc:
+  api-docs:
+    path: book-service/v3/api-docs
+  show-actuator: true

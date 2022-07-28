@@ -8,7 +8,7 @@ eureka:
     hostname: localhost
 spring:
   application:
-    name: ms-cambio
+    name: cambio-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/cambio_service?useTimezone=true&serverTimezone=UTC
@@ -26,3 +26,6 @@ spring:
     schemas: cambio_service
     user: root
     password: admin
+springdoc:
+  api-docs:
+    path: cambio-service/v3/api-docs
